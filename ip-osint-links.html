@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IP OSINT リンク集</title>
+<style>
+  :root{
+    --bg:#0b0f17;
+    --bg2:#0f1522;
+    --card:#151c2c;
+    --card-hover:#1c2640;
+    --border:#26314a;
+    --text:#e7ecf5;
+    --muted:#8b97ad;
+    --accent:#5b8cff;
+    --c1:#2b4c7e; /* 登録情報・ASN */
+    --c2:#1f8a8a; /* サーバー構成 */
+    --c3:#9e3b3b; /* 脅威インテリジェンス */
+    --c4:#d18a32; /* VPN・Proxy */
+    --c5:#5a6577; /* 位置情報 */
+    --c6:#2f8f55; /* 統合・その他 */
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    background:radial-gradient(1200px 800px at 80% -10%,#15233f 0%,transparent 55%),
+               radial-gradient(900px 700px at -10% 10%,#102a2a 0%,transparent 50%),
+               var(--bg);
+    color:var(--text);
+    min-height:100vh;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+
+  /* Header */
+  header{padding:64px 0 32px;text-align:center}
+  .badge{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--muted);border:1px solid var(--border);
+    padding:6px 14px;border-radius:999px;margin-bottom:22px;background:rgba(255,255,255,.02)
+  }
+  .badge .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent)}
+  h1{
+    font-size:clamp(30px,5vw,48px);font-weight:800;letter-spacing:-.02em;
+    background:linear-gradient(120deg,#fff 20%,#7fa8ff 60%,#4fd0c4 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .sub{margin-top:14px;color:var(--muted);font-size:16px;max-width:640px;margin-left:auto;margin-right:auto}
+
+  /* Search */
+  .toolbar{position:sticky;top:0;z-index:20;padding:18px 0;background:linear-gradient(var(--bg),rgba(11,15,23,.85));backdrop-filter:blur(8px)}
+  .search{position:relative;max-width:560px;margin:0 auto}
+  .search input{
+    width:100%;padding:14px 16px 14px 46px;border-radius:14px;
+    background:var(--card);border:1px solid var(--border);color:var(--text);
+    font-size:15px;outline:none;transition:.2s
+  }
+  .search input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(91,140,255,.18)}
+  .search svg{position:absolute;left:16px;top:50%;transform:translateY(-50%);width:18px;height:18px;stroke:var(--muted)}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:16px}
+  .chip{
+    font-size:13px;padding:7px 13px;border-radius:999px;cursor:pointer;
+    border:1px solid var(--border);color:var(--muted);background:transparent;transition:.18s;white-space:nowrap
+  }
+  .chip:hover{color:var(--text);border-color:var(--accent)}
+  .chip.active{background:var(--accent);border-color:var(--accent);color:#fff}
+
+  /* Sections */
+  main{padding:30px 0 60px}
+  .section{margin-bottom:46px}
+  .sec-head{display:flex;align-items:center;gap:14px;margin-bottom:18px}
+  .sec-bar{width:5px;height:30px;border-radius:6px}
+  .sec-title{font-size:20px;font-weight:700;letter-spacing:.01em}
+  .sec-count{font-size:12px;color:var(--muted);border:1px solid var(--border);border-radius:999px;padding:3px 10px}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+  .card{
+    display:flex;flex-direction:column;gap:8px;
+    background:var(--card);border:1px solid var(--border);border-radius:16px;
+    padding:18px;text-decoration:none;color:inherit;position:relative;overflow:hidden;
+    transition:transform .18s ease,border-color .18s ease,background .18s ease
+  }
+  .card::before{content:"";position:absolute;left:0;top:0;height:100%;width:3px;background:var(--cc,var(--accent));opacity:.85}
+  .card:hover{transform:translateY(-4px);background:var(--card-hover);border-color:var(--cc,var(--accent))}
+  .card-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .card-name{font-size:16px;font-weight:700;letter-spacing:.01em}
+  .card-arrow{width:16px;height:16px;stroke:var(--muted);flex:none;transition:.18s}
+  .card:hover .card-arrow{stroke:var(--cc,var(--accent));transform:translate(2px,-2px)}
+  .card-desc{font-size:13px;color:var(--muted);line-height:1.55}
+  .card-host{font-size:11px;color:var(--cc,var(--accent));opacity:.9;letter-spacing:.02em;margin-top:2px}
+
+  .empty{text-align:center;color:var(--muted);padding:60px 0;display:none}
+
+  footer{border-top:1px solid var(--border);padding:30px 0 50px;text-align:center;color:var(--muted);font-size:13px}
+  footer a{color:var(--accent);text-decoration:none}
+  .count-total{color:var(--text)}
+
+  @media(max-width:600px){
+    header{padding:44px 0 22px}
+    .grid{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <span class="badge"><span class="dot"></span>IP Address OSINT Toolkit</span>
+    <h1>IP OSINT リンク集</h1>
+    <p class="sub">IPアドレスの調査に使える OSINT サービスを目的別にまとめたリンク集です。カードをクリックすると各サービスが新しいタブで開きます。</p>
+  </header>
+
+  <div class="toolbar">
+    <div class="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      <input id="q" type="text" placeholder="サービス名・キーワードで検索（例: whois, vpn, shodan）" autocomplete="off">
+    </div>
+    <div class="chips" id="chips"></div>
+  </div>
+
+  <main id="main"></main>
+  <div class="empty" id="empty">該当するサービスが見つかりませんでした。</div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <p><span class="count-total" id="total">0</span> サービス / 6 カテゴリ &nbsp;·&nbsp; リンクは <span id="today"></span> 時点で確認済み</p>
+    <p style="margin-top:8px">調査目的に応じて各サービスをご利用ください。利用は各サイトの規約に従ってください。</p>
+  </div>
+</footer>
+
+<script>
+const DATA = [
+  {
+    cat:"登録情報・ASN", color:"var(--c1)",
+    items:[
+      {name:"ARIN Whois / RDAP", url:"https://search.arin.net/rdap/", desc:"北米地域の IP・ASN 登録情報を検索（RDAP対応）"},
+      {name:"RIPE NCC Whois", url:"https://apps.db.ripe.net/db-web-ui/query", desc:"欧州・中東地域の IP・ASN 登録情報データベース"},
+      {name:"APNIC Whois", url:"https://wq.apnic.net/static/search.html", desc:"アジア太平洋地域の IP・ASN 割り当て情報"},
+      {name:"JPNIC Whois", url:"https://www.nic.ad.jp/ja/whois/", desc:"日本国内の IP アドレス・AS番号の登録情報"},
+      {name:"ipinfo.io", url:"https://ipinfo.io/", desc:"IP の所有組織・ASN・地理情報をまとめて表示"},
+      {name:"IPひろば", url:"https://www.iphiroba.jp/", desc:"日本語で IP・ドメインの登録情報を確認"},
+      {name:"aguse.jp", url:"https://www.aguse.jp/", desc:"サイトの運営者情報・IP・経路を日本語で調査"},
+      {name:"CMAN.jp", url:"https://www.cman.jp/network/support/ip.html", desc:"IP・ドメインの whois 情報検索（日本語）"}
+    ]
+  },
+  {
+    cat:"サーバー構成", color:"var(--c2)",
+    items:[
+      {name:"Shodan", url:"https://www.shodan.io/", desc:"公開ポート・サービス・機器を探すIoT検索エンジン"},
+      {name:"Censys", url:"https://search.censys.io/", desc:"ホスト・証明書・サービスのインターネット全体スキャン"},
+      {name:"FOFA", url:"https://fofa.info/", desc:"指紋ベースで公開資産を検索するサイバー空間マッピング"},
+      {name:"Criminal IP", url:"https://www.criminalip.io/", desc:"資産検索とリスクスコアを備えた脅威インテリジェンス"},
+      {name:"ZoomEye", url:"https://www.zoomeye.ai/", desc:"インターネット接続機器・サービスの検索エンジン"},
+      {name:"Netlas", url:"https://netlas.io/", desc:"インターネット全体スキャンと攻撃面の調査プラットフォーム"},
+      {name:"GreyNoise", url:"https://viz.greynoise.io/", desc:"インターネット上のスキャン・ノイズ活動を可視化"},
+      {name:"BGP.he.net", url:"https://bgp.he.net/", desc:"ASN・経路・ピアリングなど BGP 情報を閲覧"}
+    ]
+  },
+  {
+    cat:"脅威インテリジェンス", color:"var(--c3)",
+    items:[
+      {name:"AbuseIPDB", url:"https://www.abuseipdb.com/", desc:"不正アクセスの報告に基づく IP の悪性度チェック"},
+      {name:"VirusTotal", url:"https://www.virustotal.com/", desc:"IP・ドメイン・ファイルを複数エンジンで評価"},
+      {name:"OTX AlienVault", url:"https://otx.alienvault.com/", desc:"脅威指標(IoC)を共有するオープン脅威交換"},
+      {name:"Spamhaus", url:"https://check.spamhaus.org/", desc:"IP・ドメインのブロックリスト掲載状況を確認"}
+    ]
+  },
+  {
+    cat:"VPN・Proxy・匿名化", color:"var(--c4)",
+    items:[
+      {name:"Spur", url:"https://spur.us/", desc:"住宅プロキシ・VPN・ボットを検出する IP 評価"},
+      {name:"VPNAPI", url:"https://vpnapi.io/", desc:"VPN・プロキシ・Tor・Private Relay を判定する API"},
+      {name:"IP2Proxy", url:"https://www.ip2proxy.com/", desc:"プロキシ・VPN・Tor 出口などの匿名 IP 判定"},
+      {name:"IP2Location", url:"https://www.ip2location.com/", desc:"IP の地理情報・プロキシ種別データベース"},
+      {name:"Tor Exit List", url:"https://metrics.torproject.org/exonerator.html", desc:"特定 IP が Tor 出口ノードだったか照会(ExoneraTor)"},
+      {name:"クラウド公式IPリスト (AWS)", url:"https://docs.aws.amazon.com/vpc/latest/userguide/aws-ip-ranges.html", desc:"AWS など各クラウドの公式 IP レンジ一覧"}
+    ]
+  },
+  {
+    cat:"位置情報", color:"var(--c5)",
+    items:[
+      {name:"ipinfo.io", url:"https://ipinfo.io/", desc:"IP の国・都市・組織を高精度に表示"},
+      {name:"MaxMind GeoLite2", url:"https://dev.maxmind.com/geoip/geolite2-free-geolocation-data", desc:"無料で使える位置情報データベース(要登録)"},
+      {name:"ip-api.com", url:"https://ip-api.com/", desc:"無料で手軽に使える IP ジオロケーション API"},
+      {name:"ipgeolocation.io", url:"https://ipgeolocation.io/", desc:"位置・タイムゾーン・通貨などの IP 情報 API"}
+    ]
+  },
+  {
+    cat:"統合・その他", color:"var(--c6)",
+    items:[
+      {name:"SecurityTrails", url:"https://securitytrails.com/", desc:"DNS・ドメイン・IP の履歴データを横断調査"},
+      {name:"ViewDNS.info", url:"https://viewdns.info/", desc:"逆引き・DNS・whois など多数のツールを集約"},
+      {name:"DomainTools", url:"https://www.domaintools.com/", desc:"ドメイン・IP の調査とプロファイリング"},
+      {name:"Whoxy", url:"https://www.whoxy.com/", desc:"whois 検索・履歴・逆引き whois の API サービス"},
+      {name:"MXToolbox", url:"https://mxtoolbox.com/", desc:"DNS・ブラックリスト・メール関連の診断ツール"},
+      {name:"OSINT Framework", url:"https://osintframework.com/", desc:"OSINT ツールを目的別に網羅したリンク集"}
+    ]
+  }
+];
+
+const host = u => { try { return new URL(u).hostname.replace(/^www\./,''); } catch(e){ return ""; } };
+const main = document.getElementById('main');
+const chips = document.getElementById('chips');
+const q = document.getElementById('q');
+const empty = document.getElementById('empty');
+let activeCat = "all";
+
+// total count + date
+const total = DATA.reduce((n,c)=>n+c.items.length,0);
+document.getElementById('total').textContent = total;
+document.getElementById('today').textContent = "2026年6月";
+
+// chips
+const allChip = document.createElement('button');
+allChip.className = 'chip active'; allChip.textContent = 'すべて';
+allChip.onclick = ()=>{ activeCat="all"; setActive(allChip); render(); };
+chips.appendChild(allChip);
+DATA.forEach(c=>{
+  const b = document.createElement('button');
+  b.className='chip'; b.textContent=c.cat;
+  b.onclick=()=>{ activeCat=c.cat; setActive(b); render(); };
+  chips.appendChild(b);
+});
+function setActive(el){ document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active')); el.classList.add('active'); }
+
+function render(){
+  const term = q.value.trim().toLowerCase();
+  main.innerHTML = '';
+  let shown = 0;
+  DATA.forEach(c=>{
+    if(activeCat!=="all" && activeCat!==c.cat) return;
+    const items = c.items.filter(it=>{
+      if(!term) return true;
+      return (it.name+' '+it.desc+' '+c.cat+' '+host(it.url)).toLowerCase().includes(term);
+    });
+    if(!items.length) return;
+    shown += items.length;
+    const sec = document.createElement('section');
+    sec.className='section';
+    sec.innerHTML = `
+      <div class="sec-head">
+        <span class="sec-bar" style="background:${c.color}"></span>
+        <span class="sec-title">${c.cat}</span>
+        <span class="sec-count">${items.length}</span>
+      </div>
+      <div class="grid"></div>`;
+    const grid = sec.querySelector('.grid');
+    items.forEach(it=>{
+      const a = document.createElement('a');
+      a.className='card'; a.href=it.url; a.target='_blank'; a.rel='noopener noreferrer';
+      a.style.setProperty('--cc', c.color);
+      a.innerHTML = `
+        <div class="card-top">
+          <span class="card-name">${it.name}</span>
+          <svg class="card-arrow" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
+        </div>
+        <div class="card-desc">${it.desc}</div>
+        <div class="card-host">${host(it.url)}</div>`;
+      grid.appendChild(a);
+    });
+    main.appendChild(sec);
+  });
+  empty.style.display = shown ? 'none' : 'block';
+}
+
+q.addEventListener('input', render);
+render();
+</script>
+</body>
+</html>
